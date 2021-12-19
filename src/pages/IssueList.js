@@ -1,79 +1,83 @@
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 export default function IssueList() {
+  const [issues, setIssues] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const res = await fetch(
+        'https://api.github.com/repos/angular/angular-cli/issues',
+        {
+          headers: {
+            Authorization: 'token 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',
+          },
+        },
+      );
+      const data = await res.json();
+      const mostComments = data.sort((issueA, issueB) => {
+        return issueB.comments - issueA.comments;
+      });
+
+      setIssues(mostComments);
+    })();
+  }, []);
+
   return (
-    <Main>
+    <div>
       <Header>
         <h1 className="title">Angular / Angular-cli</h1>
       </Header>
-      <Item>
-        <div className="content">
-          <h3 className="issue-title">#111 issue title</h3>
-          <p className="issue-info">작성자: name 작성일: 2019년 12월 31일</p>
-        </div>
-        <div className="comments">코멘트: 67</div>
-      </Item>
-      <Item>
-        <div className="content">
-          <h3 className="issue-title">#111 issue title</h3>
-          <p className="issue-info">작성자: name 작성일: 2019년 12월 31일</p>
-        </div>
-        <div className="comments">코멘트: 67</div>
-      </Item>
-      <Item>
-        <div className="content">
-          <h3 className="issue-title">#111 issue title</h3>
-          <p className="issue-info">작성자: name 작성일: 2019년 12월 31일</p>
-        </div>
-        <div className="comments">코멘트: 67</div>
-      </Item>
-      <Item>
-        <div className="content">
-          <h3 className="issue-title">#111 issue title</h3>
-          <p className="issue-info">작성자: name 작성일: 2019년 12월 31일</p>
-        </div>
-        <div className="comments">코멘트: 67</div>
-      </Item>
-      <Item>
-        <div className="content">
-          <h3 className="issue-title">#111 issue title</h3>
-          <p className="issue-info">작성자: name 작성일: 2019년 12월 31일</p>
-        </div>
-        <div className="comments">코멘트: 67</div>
-      </Item>
-      <img src="https://via.placeholder.com/500x100?text=ad" />
-      <Item>
-        <div className="content">
-          <h3 className="issue-title">#111 issue title</h3>
-          <p className="issue-info">작성자: name 작성일: 2019년 12월 31일</p>
-        </div>
-        <div className="comments">코멘트: 67</div>
-      </Item>
-    </Main>
+      <List>
+        {issues.map((issue) => (
+          <Item to={issue.url} key={issue.id}>
+            <div className="content">
+              <h3 className="issue-title">
+                #{issue.number} {issue.title}
+              </h3>
+              <p className="issue-info">
+                작성자: {issue.user.login} 작성일: {issue.created_at}
+              </p>
+            </div>
+            <div className="comments">코멘트: {issue.comments}</div>
+          </Item>
+        ))}
+        <AdWrapper>
+          <img src="https://via.placeholder.com/500x100?text=ad" />
+        </AdWrapper>
+      </List>
+    </div>
   );
 }
 
-const Main = styled.main`
+const List = styled.div`
   height: 100vw;
   overflow: scroll;
 `;
 
-const Header = styled.header`
+const AdWrapper = styled.div`
   text-align: center;
+`;
+
+const Header = styled.header`
+  display: fixed;
 
   .title {
     font-weight: 400;
-    margin: 1rem;
+    margin: 1rem auto;
   }
 `;
 
-const Item = styled.div`
+const Item = styled(NavLink)`
   margin: 1rem;
   padding: 1rem;
   border-bottom: 1px solid black;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-decoration: none;
+  color: black;
 
   .issue-title {
     font-weight: 400;

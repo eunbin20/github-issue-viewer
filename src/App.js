@@ -18,7 +18,6 @@ export default function App() {
 const Wrapper = styled.article`
   margin: 0 auto;
   position: relative;
-  overflow: scroll;
   border: 1px solid #ddd;
 }
 `;

@@ -7,6 +7,15 @@ const GlobalStyle = createGlobalStyle`
     border: 0;
     font-family: 'Apple SD Gothic Neo', arial, sans-serif;
   }
+
+  #root {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vw;
+    padding: 5rem;
+  }
 `;
 
 export default GlobalStyle;
