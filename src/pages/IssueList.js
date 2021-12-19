@@ -4,14 +4,13 @@ import { NavLink } from 'react-router-dom';
 
 export default function IssueList() {
   const [issues, setIssues] = useState([]);
-
   useEffect(() => {
     (async () => {
       const res = await fetch(
         'https://api.github.com/repos/angular/angular-cli/issues',
         {
           headers: {
-            Authorization: 'token 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',
+            Authorization: `token ${process.env.REACT_APP_PERSONAL_TOKEN}`,
           },
         },
       );
