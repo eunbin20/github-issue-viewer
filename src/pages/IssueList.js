@@ -1,36 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import Header from '../components/Header';
 
-export default function IssueList() {
-  const [issues, setIssues] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const res = await fetch(
-        'https://api.github.com/repos/angular/angular-cli/issues',
-        {
-          headers: {
-            Authorization: `token ${process.env.REACT_APP_PERSONAL_TOKEN}`,
-          },
-        },
-      );
-      const data = await res.json();
-      const mostComments = data.sort((issueA, issueB) => {
-        return issueB.comments - issueA.comments;
-      });
-
-      setIssues(mostComments);
-    })();
-  }, []);
-
+export default function IssueList({ issues, onIssueClick }) {
   return (
     <div>
-      <Header>
-        <h1 className="title">Angular / Angular-cli</h1>
-      </Header>
+      <Header />
       <List>
-        {issues.map((issue) => (
-          <Item to={issue.url} key={issue.id}>
+        {issues?.map((issue) => (
+          <Item
+            to={`/issues/${issue.id}`}
+            key={issue.id}
+            onClick={() => onIssueClick(issue)}
+          >
             <div className="content">
               <h3 className="issue-title">
                 #{issue.number} {issue.title}
@@ -57,15 +40,6 @@ const List = styled.div`
 
 const AdWrapper = styled.div`
   text-align: center;
-`;
-
-const Header = styled.header`
-  display: fixed;
-
-  .title {
-    font-weight: 400;
-    margin: 1rem auto;
-  }
 `;
 
 const Item = styled(NavLink)`
