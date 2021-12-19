@@ -48,6 +48,5 @@ export default function App() {
 const Wrapper = styled.article`
   margin: 0 auto;
   position: relative;
-  border: 1px solid #ddd;
 }
 `;

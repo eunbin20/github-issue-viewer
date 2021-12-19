@@ -12,7 +12,6 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100vw;
     height: 100vw;
     padding: 5rem;
   }
